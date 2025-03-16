@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Loader from "../components/Loader";
@@ -91,6 +91,12 @@ const LoginPage = () => {
             {isSubmitting ? <Loader color="white" /> : <span>Login</span>}
           </Button>
         </form>
+        <Link
+          to="/register"
+          className="text-woodsmoke-50 dark:text-woodsmoke-500 hover:text-woodsmoke-100 mt-6 text-center text-sm"
+        >
+          Belum memiliki akun? Registrasi disini
+        </Link>
       </div>
     </main>
   );

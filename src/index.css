@@ -1,1 +1,22 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+@theme {
+  --color-dark-cerulean: oklch(41.01% 0.0884 245.62);
+  --color-dark-cerulean-100: oklch(96.68% 0.0176 239.99);
+  --color-dark-cerulean-400: oklch(52.33% 0.081 243.15);
+  --color-dark-cerulean-900: oklch(36.33% 0.0713 245.77);
+  --color-ocean-green: oklch(70.87% 0.1032 172.27);
+  --color-ocean-green-50: oklch(98.05% 0.0103 174.28);
+  --color-ocean-green-100: oklch(93.74% 0.0331 172.82);
+  --color-key-lime: oklch(91.09% 0.1172 118.9);
+  --color-key-lime-50: oklch(98.3% 0.0252 116.52);
+  --color-woodsmoke: oklch(16.516% 0.00624 285.7);
+  --color-woodsmoke-50: oklch(81.739% 0.01528 286.06);
+  --color-woodsmoke-100: oklch(78.313% 0.01685 286);
+  --color-woodsmoke-500: oklch(50.041% 0.0332 285.14);
+  --color-woodsmoke-800: oklch(28.879% 0.01631 285.33);
+  --color-woodsmoke-900: oklch(20.687% 0.00984 285.51);
+  --color-woodsmoke-950: oklch(16.516% 0.00624 285.7);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));

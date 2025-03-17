@@ -27,7 +27,7 @@ const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
     <button
       onClick={toggleTheme}
       className={cn(
-        "bg-woodsmoke-100 dark:bg-woodsmoke-800 relative w-15 rounded-full p-1.5 transition-all duration-300",
+        "bg-woodsmoke-100 dark:bg-woodsmoke-800 relative min-w-15 rounded-full p-1.5 transition-all duration-300",
         className,
       )}
     >

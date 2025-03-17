@@ -1,21 +1,30 @@
-import { Outlet } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { ReactNode } from "react";
+import useAuth from "../hooks/useAuth";
+import Sidebar from "./Sidebar";
+import Topbar from "./Topbar";
 
-const AuthenticatedLayout = () => {
-    const { loading } = useAuth();
+interface AuthenticatedLayoutProps {
+  children: ReactNode | string;
+}
 
-    if (loading) {
-        return <div>LOADING ....</div>;
-    }
+const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
+  const { loading } = useAuth();
 
-    return (
-        <div>
-            <h1>INI DASHBOARD</h1>
-            <main>
-                <Outlet />
-            </main>
-        </div>
-    );
+  if (loading) {
+    return <div>LOADING ....</div>;
+  }
+
+  return (
+    <div className="flex max-h-screen overflow-y-clip">
+      <Sidebar />
+      <div className="flex w-full flex-col">
+        <Topbar />
+        <main className="bg-tradewind-50 flex w-full flex-1 overflow-y-auto px-6 pt-6">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
 };
 
 export default AuthenticatedLayout;

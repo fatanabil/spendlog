@@ -9,7 +9,7 @@ const Button = (props: ButtonProps) => {
   return (
     <button
       className={clsx(
-        "bg-ocean-green flex w-full cursor-pointer justify-center rounded-md px-3 py-2 text-white transition-all duration-150 active:scale-95",
+        "bg-tradewind dark:bg-tradewind flex w-full cursor-pointer justify-center rounded-md px-3 py-2 text-white transition-all duration-150 active:scale-95",
         props.className,
       )}
       {...props}

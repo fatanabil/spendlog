@@ -2,8 +2,13 @@ import { useEffect } from "react";
 import { useThemeStore } from "../store/themeStore";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import cn from "../utils/cn";
 
-const ThemeSwitcher = () => {
+interface ThemeSwitcherProps {
+  className?: string;
+}
+
+const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
   const { theme, setTheme } = useThemeStore();
 
   const toggleTheme = () => {
@@ -21,7 +26,10 @@ const ThemeSwitcher = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="bg-woodsmoke-50 dark:bg-woodsmoke-800 relative w-15 rounded-full p-1.5 transition-all duration-300"
+      className={cn(
+        "bg-woodsmoke-100 dark:bg-woodsmoke-800 relative w-15 rounded-full p-1.5 transition-all duration-300",
+        className,
+      )}
     >
       <div
         className={clsx(

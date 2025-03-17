@@ -42,12 +42,12 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="bg-ocean-green-50 dark:bg-woodsmoke-950 flex min-h-screen w-full items-center justify-center">
-      <div className="dark:bg-woodsmoke-900 dark:border-woodsmoke-500 mx-auto flex w-full max-w-md flex-col rounded-md bg-white p-6 shadow-md shadow-slate-200 dark:border-1 dark:shadow-none">
-        <h1 className="text-dark-cerulean text-center text-3xl font-semibold dark:text-white">
+    <main className="bg-tradewind-50 dark:bg-woodsmoke-950 flex min-h-screen w-full items-center justify-center">
+      <div className="dark:bg-woodsmoke-900 dark:border-woodsmoke-500 mx-auto flex w-full max-w-md flex-col rounded-md bg-white p-6 shadow-md dark:border-1 dark:shadow-none">
+        <h1 className="text-chathams-blue text-center text-3xl font-semibold dark:text-white">
           Login
         </h1>
-        <hr className="bg-ocean-green my-6 h-0.5 rounded-full border-none" />
+        <hr className="bg-tradewind dark:bg-tradewind my-6 h-0.5 rounded-full border-none" />
         <form
           method="POST"
           onSubmit={handleSubmit(loginUser)}
@@ -56,7 +56,7 @@ const LoginPage = () => {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="email"
-              className="text-dark-cerulean text-lg dark:text-white"
+              className="text-chathams-blue text-lg dark:text-white"
             >
               Email
             </label>
@@ -73,7 +73,7 @@ const LoginPage = () => {
           <div className="flex flex-col gap-2">
             <label
               htmlFor="password"
-              className="text-dark-cerulean text-lg dark:text-white"
+              className="text-chathams-blue text-lg dark:text-white"
             >
               Password
             </label>
@@ -93,7 +93,7 @@ const LoginPage = () => {
         </form>
         <Link
           to="/register"
-          className="text-woodsmoke-50 dark:text-woodsmoke-500 hover:text-woodsmoke-100 mt-6 text-center text-sm"
+          className="text-woodsmoke-300 dark:text-woodsmoke-500 hover:text-woodsmoke-400 mt-6 text-center text-sm"
         >
           Belum memiliki akun? Registrasi disini
         </Link>

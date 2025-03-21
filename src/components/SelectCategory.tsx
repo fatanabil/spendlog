@@ -23,7 +23,7 @@ const OptionCategory = ({
   return (
     <li
       id={category.id}
-      className="bg-tradewind cursor-pointer list-none rounded-md px-2 py-1 text-sm text-white"
+      className="cursor-pointer list-none rounded-md px-2 py-1 text-sm text-white transition-all duration-150 hover:scale-95"
       style={{ backgroundColor: `${category.color}` }}
       onClick={() => {
         if (field && setIsOpen) {
@@ -61,7 +61,10 @@ const SelectCategory = ({
       />
       {selectedCat && (
         <IconButton
-          onClick={() => field.onChange({ id: "", name: "", color: "" })}
+          onClick={() => {
+            field.onChange({ id: "", name: "", color: "" });
+            setIsOpen(true);
+          }}
           className="absolute top-1/2 right-0 mr-1 -translate-y-1/2"
           icon={<XMarkIcon className="size-6 text-rose-400" />}
         />

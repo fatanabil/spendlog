@@ -1,7 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
+import { useCategoryStore } from "../store/categoryStore";
+import { fetchWithToken } from "../utils/fetchWithToken";
+import { ApiResponse } from "../schemas/ApiResponseSchema";
+import { Category } from "../schemas/CategorySchema";
 
 interface AuthenticatedLayoutProps {
   children: ReactNode | string;
@@ -9,6 +13,20 @@ interface AuthenticatedLayoutProps {
 
 const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
   const { loading } = useAuth();
+  const { setCategories } = useCategoryStore();
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const { data } = await fetchWithToken<
+        ApiResponse<{ categories: Category[] }>
+      >({ url: "/category" });
+      if (data) {
+        setCategories(data.categories);
+      }
+    };
+
+    getCategories();
+  }, [setCategories]);
 
   if (loading) {
     return <div>LOADING ....</div>;

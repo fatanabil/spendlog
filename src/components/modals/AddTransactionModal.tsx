@@ -18,18 +18,21 @@ import Backdrop from "../Backdrop";
 import cn from "../../utils/cn";
 import { fetchWithToken } from "../../utils/fetchWithToken";
 import { ApiResponse } from "../../schemas/ApiResponseSchema";
+import { useQueryClient } from "@tanstack/react-query";
 
 const formatNumber = (num: string) => {
   return num.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
+interface AddTransactionModalProps {
+  isOpen: boolean;
+  closeModal: () => void;
+}
+
 const AddTransactionModal = ({
   isOpen,
   closeModal,
-}: {
-  isOpen: boolean;
-  closeModal: () => void;
-}) => {
+}: AddTransactionModalProps) => {
   const {
     register,
     handleSubmit,
@@ -46,6 +49,8 @@ const AddTransactionModal = ({
   });
   const [displayValue, setDisplayValue] = useState("");
   const amountInputRef = useRef<HTMLInputElement>(null);
+
+  const queryClient = useQueryClient();
 
   const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
     const rawInput = e.target.value;
@@ -84,14 +89,21 @@ const AddTransactionModal = ({
     categoryId: string;
     amount: number;
   }) => {
-    const { data: responseData } = await fetchWithToken<
-      ApiResponse<{ newTransaction: Transaction }>
-    >({
+    await fetchWithToken<ApiResponse<{ newTransaction: Transaction }>>({
       url: "/transactions",
       method: "POST",
       data,
     });
-    console.log(responseData);
+    queryClient.invalidateQueries({
+      queryKey: ["recent-transactions"],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["summary"],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["by-category"],
+    });
+    closeModal();
   };
 
   const addTransaction = (data: AddTransaction) => {
@@ -169,8 +181,9 @@ const AddTransactionModal = ({
                 onChange={handleAmountChange}
                 ref={amountInputRef}
                 errors={errors.amount}
+                autoComplete="off"
               />
-              {errors?.amount?.message && (
+              {errors.amount?.message && (
                 <ErrorTextForm>{errors.amount.message}</ErrorTextForm>
               )}
             </div>

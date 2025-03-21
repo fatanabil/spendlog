@@ -10,7 +10,7 @@ const FormResponseMessage = ({ message, type }: FormResponseMessageProps) => {
     <div>
       <div
         className={clsx("mb-3 rounded-md border-1 p-3 text-center", {
-          "bg-ocean-green-50 border-ocean-green-100 text-ocean-green":
+          "bg-tradewind-100 border-tradewind-200 text-tradewind-600":
             type === "success",
           "border-rose-200 bg-rose-100 text-rose-400": type === "error",
         })}

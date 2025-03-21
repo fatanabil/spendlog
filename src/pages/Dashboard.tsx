@@ -1,52 +1,41 @@
-import { useEffect, useState } from "react";
-import { fetchWithToken } from "../utils/fetchWithToken";
-import { ApiResponse } from "../schemas/ApiResponseSchema";
 import {
   CheckIcon,
   PlusIcon,
   WalletIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Transaction } from "../schemas/TransactionSchema";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import {
+  getRecentTransaction,
+  getSummaryTransaction,
+  getTransactionByCategory,
+} from "../api/TransactionAPI";
+import CategoryBadge from "../components/CategoryBadge";
+import FloatingActionButton from "../components/FloatingActionButton";
+import Loader from "../components/Loader";
+import AddTransactionModal from "../components/modals/AddTransactionModal";
+import Skeleton from "../components/Skeleton";
+import useModal from "../hooks/useModal";
+import { useCategoryStore } from "../store/categoryStore";
 import formatCurrency from "../utils/formatCurrency";
 import formatDate from "../utils/formatDate";
-import CategoryBadge from "../components/CategoryBadge";
-import AddTransactionModal from "../components/modals/AddTransactionModal";
-import useModal from "../hooks/useModal";
-import FloatingActionButton from "../components/FloatingActionButton";
-
-interface TransactionSummaryDataType {
-  incomeTotal: number;
-  expenseTotal: number;
-  currentBalance: number;
-  expenseIncomeRatio: number;
-}
 
 const TransactionSummary = () => {
-  const [summary, setSummary] = useState<TransactionSummaryDataType>({
-    currentBalance: 0,
-    expenseIncomeRatio: 0,
-    expenseTotal: 0,
-    incomeTotal: 0,
+  const { data: summary, isLoading } = useSuspenseQuery({
+    queryKey: ["summary"],
+    queryFn: getSummaryTransaction,
   });
 
-  useEffect(() => {
-    const getSummary = async () => {
-      const { data } = await fetchWithToken<
-        ApiResponse<{ summary: TransactionSummaryDataType }>
-      >({
-        url: "/transactions/summary",
-      });
-
-      if (data?.summary) {
-        setSummary(data.summary);
-      }
-    };
-    getSummary();
-  }, []);
-
   return (
-    <section className="basis-1/2 rounded-md bg-white p-6 shadow-md">
+    <section className="w-1/2 rounded-md bg-white p-6 shadow-md">
       <h1 className="text-chathams-blue text-2xl font-semibold">
         Ringkasan Keuangan
       </h1>
@@ -58,7 +47,9 @@ const TransactionSummary = () => {
               Total Pemasukan
             </td>
             <td className="px-2">:</td>
-            <td>{formatCurrency(summary.incomeTotal)}</td>
+            <td>
+              {isLoading ? <Skeleton /> : formatCurrency(summary.incomeTotal)}
+            </td>
           </tr>
           <tr className="text-rose-400">
             <td className="flex gap-1 pr-2">
@@ -66,7 +57,9 @@ const TransactionSummary = () => {
               Total Pengeluaran
             </td>
             <td className="px-2">:</td>
-            <td>{formatCurrency(summary.expenseTotal)}</td>
+            <td>
+              {isLoading ? <Skeleton /> : formatCurrency(summary.expenseTotal)}
+            </td>
           </tr>
           <tr className="text-chathams-blue">
             <td className="flex gap-1 pr-2">
@@ -74,43 +67,95 @@ const TransactionSummary = () => {
               Saldo sekarang
             </td>
             <td className="px-2">:</td>
-            <td>{formatCurrency(summary.currentBalance)}</td>
+            <td>
+              {isLoading ? (
+                <Skeleton />
+              ) : (
+                formatCurrency(summary.currentBalance)
+              )}
+            </td>
           </tr>
         </tbody>
       </table>
       <p className="text-chathams-blue mt-2">
         Pengeluaran kamu{" "}
-        {summary.expenseIncomeRatio && summary.expenseIncomeRatio.toFixed(1)}%
-        dari pemasukan
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          summary.expenseIncomeRatio && summary.expenseIncomeRatio.toFixed(1)
+        )}
+        % dari pemasukan
       </p>
     </section>
   );
 };
 
 const TransactionGraph = () => {
+  const { categories } = useCategoryStore();
+  const {
+    data: { expense, income },
+  } = useSuspenseQuery({
+    queryKey: ["by-category"],
+    queryFn: getTransactionByCategory,
+  });
+
+  const expenseData = expense.map((dt) => {
+    const category = categories.filter((cat) => cat.id === dt.categoryId)[0];
+    return {
+      ...category,
+      value: dt._sum.amount ? Number(dt._sum.amount) : 0,
+    };
+  });
+  const incomeData = income.map((dt) => {
+    const category = categories.filter((cat) => cat.id === dt.categoryId)[0];
+    return {
+      ...category,
+      value: dt._sum.amount ? Number(dt._sum.amount) : 0,
+    };
+  });
+
   return (
-    <section className="basis-1/2 rounded-md bg-white p-6 shadow-md">
+    <section className="w-1/2 rounded-md bg-white p-6 shadow-md">
       <h1 className="text-chathams-blue text-2xl font-semibold">Grafik</h1>
+      <div className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth">
+        <div className="mt-4 min-w-full snap-start">
+          <p className="text-woodsmoke-400">Pengeluaran per kategori</p>
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie data={expenseData} dataKey="value" nameKey="name">
+                {expenseData.map((dt) => (
+                  <Cell key={`cell-expense-${dt.id}`} fill={dt.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="mt-4 min-w-full snap-start">
+          <p className="text-woodsmoke-400">Pemasukan per kategori</p>
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie data={incomeData} dataKey="value" nameKey="name">
+                {incomeData.map((dt) => (
+                  <Cell key={`cell-expense-${dt.id}`} fill={dt.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </section>
   );
 };
 
 const RecentTransaction = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-  useEffect(() => {
-    const getTransaction = async () => {
-      const { data } = await fetchWithToken<
-        ApiResponse<{ transactions: Transaction[] }>
-      >({ url: "/transactions", method: "GET" });
-
-      if (data?.transactions) {
-        setTransactions(data.transactions);
-      }
-    };
-
-    getTransaction();
-  }, []);
+  const { data: transactions, isLoading } = useSuspenseQuery({
+    queryKey: ["recent-transactions"],
+    queryFn: getRecentTransaction,
+  });
 
   return (
     <section className="rounded-md bg-white p-6 shadow-md">
@@ -130,7 +175,15 @@ const RecentTransaction = () => {
             </tr>
           </thead>
           <tbody className="bg-tradewind-50">
-            {transactions.length === 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan={6}>
+                  <div className="flex w-full justify-center py-4">
+                    <Loader />
+                  </div>
+                </td>
+              </tr>
+            ) : transactions.length === 0 ? (
               <tr>
                 <td colSpan={6} className="text-tradewind-400 py-3 text-center">
                   Data transaksi masih kosong

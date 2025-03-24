@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CategorySchema } from "./CategorySchema";
+import { Category, CategorySchema } from "./CategorySchema";
 
 export const TransactionSchema = z.object({
   id: z.string(),
@@ -21,5 +21,13 @@ export const AddTransactionSchema = z.object({
   amount: z.number().min(1, "Jumlah transaksi masih kosong"),
 });
 
-export type Transaction = z.infer<typeof TransactionSchema>;
+export type Transaction = {
+  id: string;
+  userId: string;
+  title: string;
+  category: Category;
+  type: "expense" | "income";
+  amount: number;
+  date: string;
+};
 export type AddTransaction = z.infer<typeof AddTransactionSchema>;

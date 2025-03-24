@@ -55,3 +55,10 @@ export const getTransactionByCategory = async () => {
     income: TransactionByCategoryType[];
   };
 };
+
+export const getTransactionThisWeek = async () => {
+  const { data } = await fetchWithToken<
+    ApiResponse<{ transactions: Transaction[] }>
+  >({ url: "/transactions/by-range?range=week&groupBy=date" });
+  return data as { transactions: Transaction[] };
+};

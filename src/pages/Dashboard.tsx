@@ -6,17 +6,23 @@ import {
 } from "@heroicons/react/24/outline";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
+  Area,
+  AreaChart,
+  CartesianGrid,
   Cell,
   Legend,
   Pie,
   PieChart,
   ResponsiveContainer,
   Tooltip,
+  XAxis,
+  YAxis,
 } from "recharts";
 import {
   getRecentTransaction,
   getSummaryTransaction,
   getTransactionByCategory,
+  getTransactionThisWeek,
 } from "../api/TransactionAPI";
 import CategoryBadge from "../components/CategoryBadge";
 import FloatingActionButton from "../components/FloatingActionButton";
@@ -27,6 +33,7 @@ import useModal from "../hooks/useModal";
 import { useCategoryStore } from "../store/categoryStore";
 import formatCurrency from "../utils/formatCurrency";
 import formatDate from "../utils/formatDate";
+import { mergeTransactionsWithDates } from "../utils/mergeTransactionsWithDates";
 
 const TransactionSummary = () => {
   const { data: summary, isLoading } = useSuspenseQuery({
@@ -98,6 +105,12 @@ const TransactionGraph = () => {
     queryKey: ["by-category"],
     queryFn: getTransactionByCategory,
   });
+  const {
+    data: { transactions: thisWeekTransactions },
+  } = useSuspenseQuery({
+    queryKey: ["this-week"],
+    queryFn: getTransactionThisWeek,
+  });
 
   const expenseData = expense.map((dt) => {
     const category = categories.filter((cat) => cat.id === dt.categoryId)[0];
@@ -113,6 +126,27 @@ const TransactionGraph = () => {
       value: dt._sum.amount ? Number(dt._sum.amount) : 0,
     };
   });
+
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const start = new Date(today);
+  start.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+  start.setHours(0, 0, 0, 0);
+  const startDate = start.toISOString();
+
+  const end = new Date(start);
+  end.setDate(start.getDate() + 6);
+  end.setHours(23, 59, 59, 999);
+  const endDate = end.toISOString();
+
+  const lineData = mergeTransactionsWithDates(
+    thisWeekTransactions,
+    startDate,
+    endDate,
+  ).map((item) => ({
+    ...item,
+    day: new Date(item.date).toLocaleDateString("id-ID", { weekday: "short" }),
+  }));
 
   return (
     <section className="w-1/2 rounded-md bg-white p-6 shadow-md">
@@ -144,6 +178,54 @@ const TransactionGraph = () => {
               <Tooltip />
               <Legend />
             </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="mt-4 min-w-full snap-start">
+          <p className="text-woodsmoke-400">Total transaksi minggu ini</p>
+          <ResponsiveContainer width="100%" height={250} className="mt-3">
+            <AreaChart data={lineData}>
+              <defs>
+                <linearGradient id="incomeGradient" x1={0} y1={0} x2={0} y2={1}>
+                  <stop offset="0%" stopColor="#52b69a" stopOpacity={0.5} />
+                  <stop offset="100%" stopColor="#52b69a" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient
+                  id="expenseGradient"
+                  x1={0}
+                  y1={0}
+                  x2={0}
+                  y2={1}
+                >
+                  <stop offset="0%" stopColor="#ff637e" stopOpacity={0.5} />
+                  <stop offset="100%" stopColor="#ff637e" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="day"
+                interval={0}
+                angle={-45}
+                textAnchor="end"
+                tick={{ fontSize: 12 }}
+              />
+              <YAxis fontSize={12} />
+              <Tooltip />
+              <Legend />
+              <Area
+                type="monotone"
+                dataKey="income"
+                stroke="#52b69a"
+                fill="url(#incomeGradient)"
+                name="Pemasukan"
+              />
+              <Area
+                type="monotone"
+                dataKey="expense"
+                stroke="#ff637e"
+                fill="url(#expenseGradient)"
+                name="Pengeluaran"
+              />
+            </AreaChart>
           </ResponsiveContainer>
         </div>
       </div>

@@ -103,6 +103,9 @@ const AddTransactionModal = ({
     queryClient.invalidateQueries({
       queryKey: ["by-category"],
     });
+    queryClient.invalidateQueries({
+      queryKey: ["this-week"],
+    });
     closeModal();
   };
 

@@ -42,7 +42,7 @@ const TransactionSummary = () => {
   });
 
   return (
-    <section className="w-1/2 rounded-md bg-white p-6 shadow-md">
+    <section className="w-full rounded-md bg-white p-6 shadow-md @3xl:min-w-1/3">
       <h1 className="text-chathams-blue text-2xl font-semibold">
         Ringkasan Keuangan
       </h1>
@@ -149,7 +149,7 @@ const TransactionGraph = () => {
   }));
 
   return (
-    <section className="w-1/2 rounded-md bg-white p-6 shadow-md">
+    <section className="rounded-md bg-white p-6 shadow-md">
       <h1 className="text-chathams-blue text-2xl font-semibold">Grafik</h1>
       <div className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth">
         <div className="mt-4 min-w-full snap-start">
@@ -304,7 +304,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="flex w-full flex-col gap-3">
-        <div className="flex w-full gap-3">
+        <div className="flex w-full flex-col gap-3 @3xl:flex-row">
           <TransactionSummary />
           <TransactionGraph />
         </div>

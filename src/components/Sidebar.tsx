@@ -8,10 +8,28 @@ import {
   TagIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import cn from "../utils/cn";
+import { useRef } from "react";
+import useOutsideClick from "../hooks/useOutsideClick";
 
-const Sidebar = () => {
+interface SidebarProps {
+  setIsOpenSidebar: (value: boolean) => void;
+  isOpenSidebar: boolean;
+}
+
+const Sidebar = ({ isOpenSidebar, setIsOpenSidebar }: SidebarProps) => {
+  const sidebarRef = useRef(null);
+
+  useOutsideClick(sidebarRef, () => setIsOpenSidebar(false));
+
   return (
-    <aside className="bg-tradewind z-20 flex max-h-screen min-h-screen w-full max-w-[300px] min-w-[250px] flex-col shadow-lg">
+    <aside
+      ref={sidebarRef}
+      className={cn(
+        "bg-tradewind fixed z-50 flex max-h-screen min-h-screen w-full max-w-[300px] min-w-[250px] flex-col shadow-lg transition-all duration-300 lg:static lg:translate-x-0",
+        isOpenSidebar ? "translate-x-0" : "-translate-x-full",
+      )}
+    >
       <div className="flex h-16 items-center px-6">
         <h1 className="text-2xl font-bold text-white">SpendLog</h1>
       </div>
@@ -22,6 +40,7 @@ const Sidebar = () => {
             <Link
               to="/dashboard"
               className="hover:bg-tradewind-400 flex w-full items-center gap-3 px-6 py-3 text-lg font-semibold text-white transition-all duration-150"
+              onClick={() => setIsOpenSidebar(false)}
             >
               <Squares2X2Icon className="size-6" />
               <span>Dashboard</span>
@@ -31,6 +50,7 @@ const Sidebar = () => {
             <Link
               to="/transaksi"
               className="hover:bg-tradewind-400 flex w-full items-center gap-3 px-6 py-3 text-lg font-semibold text-white transition-all duration-150"
+              onClick={() => setIsOpenSidebar(false)}
             >
               <QueueListIcon className="h-6 w-6" />
               <span>Transaksi</span>
@@ -40,6 +60,7 @@ const Sidebar = () => {
             <Link
               to="/laporan"
               className="hover:bg-tradewind-400 flex w-full items-center gap-3 px-6 py-3 text-lg font-semibold text-white transition-all duration-150"
+              onClick={() => setIsOpenSidebar(false)}
             >
               <DocumentChartBarIcon className="size-6" />
               <span>Laporan</span>
@@ -49,6 +70,7 @@ const Sidebar = () => {
             <Link
               to="/kategori"
               className="hover:bg-tradewind-400 flex w-full items-center gap-3 px-6 py-3 text-lg font-semibold text-white transition-all duration-150"
+              onClick={() => setIsOpenSidebar(false)}
             >
               <TagIcon className="size-6" />
               <span>Kategori</span>
@@ -58,6 +80,7 @@ const Sidebar = () => {
             <Link
               to="/budget"
               className="hover:bg-tradewind-400 flex w-full items-center gap-3 px-6 py-3 text-lg font-semibold text-white transition-all duration-150"
+              onClick={() => setIsOpenSidebar(false)}
             >
               <CurrencyDollarIcon className="size-6" />
               <span>Budget</span>
@@ -69,6 +92,7 @@ const Sidebar = () => {
             <Link
               to="/dashboard"
               className="hover:bg-tradewind-400 flex w-full items-center gap-3 px-6 py-3 text-lg font-semibold text-white transition-all duration-150"
+              onClick={() => setIsOpenSidebar(false)}
             >
               <Cog6ToothIcon className="h-6 w-6" />
               <span>Setting</span>

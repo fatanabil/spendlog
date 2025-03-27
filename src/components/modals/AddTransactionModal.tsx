@@ -124,7 +124,7 @@ const AddTransactionModal = ({
       <Backdrop isOpen={isOpen} />
       <div
         className={cn(
-          "text-chathams-blue fixed top-1/2 left-1/2 z-50 w-[calc(100%-32px)] max-w-md -translate-x-1/2 rounded-md bg-white p-6 shadow-md transition-all duration-300 md:w-full",
+          "text-chathams-blue dark:bg-woodsmoke-900 fixed top-1/2 left-1/2 z-50 w-[calc(100%-32px)] max-w-md -translate-x-1/2 rounded-md bg-white p-6 shadow-md transition-all duration-300 md:w-full dark:text-white",
           isOpen
             ? "pointer-events-auto -translate-y-1/2 opacity-100"
             : "pointer-events-none -translate-y-[calc(50%+16px)] opacity-0",

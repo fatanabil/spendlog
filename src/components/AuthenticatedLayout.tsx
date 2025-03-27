@@ -41,7 +41,7 @@ const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
       />
       <div className="flex w-full flex-1 flex-col">
         <Topbar setIsOpenSidebar={setIsOpenSidebar} />
-        <main className="bg-tradewind-50 @container flex flex-1 flex-col overflow-y-auto px-4 pt-4 pb-6 lg:w-[calc(100vw-250px)] lg:px-6 lg:pt-6 xl:w-[calc(100vw-300px)]">
+        <main className="bg-tradewind-50 dark:bg-woodsmoke-950 custom-scrollbar @container flex flex-1 flex-col overflow-y-auto px-4 pt-4 pb-6 lg:w-[calc(100vw-250px)] lg:px-6 lg:pt-6 xl:w-[calc(100vw-300px)]">
           {children}
         </main>
       </div>

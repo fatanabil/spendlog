@@ -43,7 +43,7 @@ const RegisterPage = () => {
 
   return (
     <main className="bg-tradewind-50 dark:bg-woodsmoke-950 flex min-h-screen w-full items-center justify-center px-4">
-      <div className="dark:bg-woodsmoke-900 dark:border-woodsmoke-500 mx-auto flex w-full max-w-md flex-col rounded-md bg-white p-6 shadow-md shadow-slate-200 dark:border-1 dark:shadow-none">
+      <div className="dark:bg-woodsmoke-900 dark:border-woodsmoke-800 mx-auto flex w-full max-w-md flex-col rounded-md bg-white p-6 shadow-md shadow-slate-200 dark:border-1 dark:shadow-none">
         <h1 className="text-chathams-blue text-center text-3xl font-semibold dark:text-white">
           Register
         </h1>

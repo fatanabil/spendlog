@@ -11,7 +11,7 @@ const IconButton = (props: IconButtonProps) => {
     <button
       {...props}
       className={cn(
-        "hover:bg-woodsmoke-100 h-8 w-8 cursor-pointer rounded-md p-1",
+        "hover:bg-woodsmoke-100 dark:hover:bg-woodsmoke-800 h-8 w-8 cursor-pointer rounded-md p-1",
         props.className,
       )}
     >

@@ -4,7 +4,7 @@ const Backdrop = ({ isOpen }: { isOpen: boolean }) => {
   return (
     <div
       className={cn(
-        "bg-woodsmoke-900/30 fixed top-0 left-0 z-40 min-h-screen w-full transition-opacity duration-300",
+        "bg-woodsmoke-900/30 fixed top-0 left-0 z-50 min-h-screen w-full transition-opacity duration-300",
         isOpen
           ? "pointer-events-auto opacity-100"
           : "pointer-events-none opacity-0",

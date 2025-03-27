@@ -34,6 +34,7 @@ import { useCategoryStore } from "../store/categoryStore";
 import formatCurrency from "../utils/formatCurrency";
 import formatDate from "../utils/formatDate";
 import { mergeTransactionsWithDates } from "../utils/mergeTransactionsWithDates";
+import { Link } from "react-router-dom";
 
 const TransactionSummary = () => {
   const { data: summary, isLoading } = useSuspenseQuery({
@@ -42,8 +43,8 @@ const TransactionSummary = () => {
   });
 
   return (
-    <section className="w-full rounded-md bg-white p-6 shadow-md @3xl:min-w-1/3">
-      <h1 className="text-chathams-blue text-2xl font-semibold">
+    <section className="dark:bg-woodsmoke-900 dark:border-woodsmoke-800 w-full rounded-md bg-white p-6 shadow-md @3xl:min-w-1/3 dark:border-1">
+      <h1 className="text-chathams-blue text-2xl font-semibold dark:text-white">
         Ringkasan Keuangan
       </h1>
       <table className="mt-4 gap-1">
@@ -68,7 +69,7 @@ const TransactionSummary = () => {
               {isLoading ? <Skeleton /> : formatCurrency(summary.expenseTotal)}
             </td>
           </tr>
-          <tr className="text-chathams-blue">
+          <tr className="text-chathams-blue dark:text-white">
             <td className="flex gap-1 pr-2">
               <WalletIcon className="size-6" />
               Saldo sekarang
@@ -84,7 +85,7 @@ const TransactionSummary = () => {
           </tr>
         </tbody>
       </table>
-      <p className="text-chathams-blue mt-2">
+      <p className="text-chathams-blue mt-2 dark:text-white">
         Pengeluaran kamu{" "}
         {isLoading ? (
           <Skeleton />
@@ -149,9 +150,11 @@ const TransactionGraph = () => {
   }));
 
   return (
-    <section className="rounded-md bg-white p-6 shadow-md">
-      <h1 className="text-chathams-blue text-2xl font-semibold">Grafik</h1>
-      <div className="flex w-full snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth">
+    <section className="dark:bg-woodsmoke-900 dark:border-woodsmoke-800 rounded-md bg-white p-6 shadow-md dark:border-1">
+      <h1 className="text-chathams-blue text-2xl font-semibold dark:text-white">
+        Grafik
+      </h1>
+      <div className="custom-scrollbar flex w-full snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth">
         <div className="mt-4 min-w-full snap-start">
           <p className="text-woodsmoke-400">Pengeluaran per kategori</p>
           <ResponsiveContainer width="100%" height={250}>
@@ -240,14 +243,14 @@ const RecentTransaction = () => {
   });
 
   return (
-    <section className="rounded-md bg-white p-6 shadow-md">
-      <h1 className="text-chathams-blue text-2xl font-semibold">
+    <section className="dark:bg-woodsmoke-900 dark:border-woodsmoke-800 rounded-md bg-white p-6 shadow-md dark:border-1">
+      <h1 className="text-chathams-blue text-2xl font-semibold dark:text-white">
         Transaksi baru-baru ini
       </h1>
       <div className="mt-4 w-full overflow-x-auto rounded-md">
-        <table className="text-chathams-blue w-full min-w-max table-auto border-collapse whitespace-nowrap">
-          <thead className="bg-tradewind-300">
-            <tr className="divide-tradewind-400 divide-x-2">
+        <table className="text-chathams-blue w-full min-w-max table-auto border-collapse whitespace-nowrap dark:text-white">
+          <thead className="bg-tradewind-300 dark:bg-woodsmoke-800">
+            <tr className="divide-tradewind-400 dark:divide-woodsmoke-600 divide-x-2">
               <th className="px-2 py-2">No.</th>
               <th className="px-4 py-2 text-left">Transaksi</th>
               <th className="px-4 py-2 text-left">Kategori</th>
@@ -256,7 +259,7 @@ const RecentTransaction = () => {
               <th className="px-4 py-2 text-left">Tanggal</th>
             </tr>
           </thead>
-          <tbody className="bg-tradewind-50">
+          <tbody className="bg-tradewind-50 dark:bg-woodsmoke-700">
             {isLoading ? (
               <tr>
                 <td colSpan={6}>
@@ -275,7 +278,7 @@ const RecentTransaction = () => {
               transactions.map((data, i) => (
                 <tr
                   key={data.id}
-                  className="divide-tradewind-100 hover:bg-tradewind-100 hover:divide-tradewind-200 divide-x-2 transition-all duration-150"
+                  className="divide-tradewind-100 dark:divide-woodsmoke-500 dark:hover:bg-woodsmoke-600 hover:bg-tradewind-100 hover:divide-tradewind-200 divide-x-2 transition-all duration-150"
                 >
                   <td className="px-4 py-2">{i + 1}.</td>
                   <td className="px-4 py-2">{data.title}</td>
@@ -293,6 +296,15 @@ const RecentTransaction = () => {
             )}
           </tbody>
         </table>
+        {transactions.length > 0 && (
+          <p className="dark:text-woodsmoke-500 text-woodsmoke-300 mt-5 text-center">
+            Hanya menampilkan 15 transaksi terbaru, untuk lebih lengkap silahkan
+            cek menu{" "}
+            <Link to="/transaksi" className="text-tradewind">
+              Transaksi
+            </Link>
+          </p>
+        )}
       </div>
     </section>
   );

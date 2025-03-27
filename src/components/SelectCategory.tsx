@@ -76,7 +76,7 @@ const SelectCategory = ({
       )}
       <div
         className={cn(
-          "bg-woodsmoke-50 absolute z-30 flex origin-top flex-col gap-2 rounded-md p-2 shadow-md transition-all duration-300",
+          "bg-woodsmoke-50 dark:bg-woodsmoke-800 absolute z-30 flex origin-top flex-col gap-2 rounded-md p-2 shadow-md transition-all duration-300",
           isOpen
             ? "pointer-events-auto translate-y-2 scale-y-100 opacity-100"
             : "pointer-events-none -translate-y-4 scale-y-90 opacity-0",

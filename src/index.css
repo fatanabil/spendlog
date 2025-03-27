@@ -48,6 +48,41 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@layer utilities {
+  .custom-scrollbar {
+    @apply overflow-y-auto;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-tradewind-200 rounded-lg;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-tradewind rounded-lg;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-tradewind-600;
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-woodsmoke-800 rounded-lg;
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-woodsmoke-500 rounded-lg;
+  }
+
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-woodsmoke-600;
+  }
+}
+
 @keyframes shimmer {
   0% {
     background-position: 200% 0;

@@ -18,13 +18,13 @@ const Topbar = ({ setIsOpenSidebar }: TopbarProps) => {
   const firstWordUser = user.name.split(" ")[0];
 
   return (
-    <nav className="z-20 flex h-16 items-center justify-between px-4 py-3 shadow-md lg:px-6">
+    <nav className="dark:bg-woodsmoke-900 z-20 flex h-16 items-center justify-between px-4 py-3 shadow-md lg:px-6">
       <IconButton
         icon={<Bars3Icon />}
         onClick={() => setIsOpenSidebar(true)}
         className="lg:hidden"
       />
-      <h1 className="text-chathams-blue text-3xl font-semibold">
+      <h1 className="text-chathams-blue text-3xl font-semibold dark:text-white">
         {currentPage}
       </h1>
       <div className="flex h-full items-center">
@@ -33,9 +33,11 @@ const Topbar = ({ setIsOpenSidebar }: TopbarProps) => {
           placeholder="Cari transaksi"
         />
         <ThemeSwitcher className="hidden scale-75 lg:block" />
-        <div className="mx-3 hidden h-full w-0.5 bg-slate-200 lg:block"></div>
-        <button className="hover:bg-woodsmoke-100 flex cursor-pointer items-center gap-3 rounded-md transition-all duration-150 lg:px-3 lg:py-2">
-          <p className="text-chathams-blue hidden md:block">{firstWordUser}</p>
+        <div className="dark:bg-woodsmoke-700 mx-3 hidden h-full w-0.5 bg-slate-200 lg:block"></div>
+        <button className="hover:bg-woodsmoke-100 dark:hover:bg-woodsmoke-800 flex cursor-pointer items-center gap-3 rounded-md transition-all duration-150 lg:px-3 lg:py-2">
+          <p className="text-chathams-blue hidden md:block dark:text-white">
+            {firstWordUser}
+          </p>
           <img
             src=""
             alt=""

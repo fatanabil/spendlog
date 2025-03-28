@@ -27,7 +27,6 @@ import {
 import CategoryBadge from "../components/CategoryBadge";
 import FloatingActionButton from "../components/FloatingActionButton";
 import Loader from "../components/Loader";
-import AddTransactionModal from "../components/modals/AddTransactionModal";
 import Skeleton from "../components/Skeleton";
 import useModal from "../hooks/useModal";
 import { useCategoryStore } from "../store/categoryStore";
@@ -35,6 +34,7 @@ import formatCurrency from "../utils/formatCurrency";
 import formatDate from "../utils/formatDate";
 import { mergeTransactionsWithDates } from "../utils/mergeTransactionsWithDates";
 import { Link } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
 const TransactionSummary = () => {
   const { data: summary, isLoading } = useSuspenseQuery({
@@ -310,6 +310,10 @@ const RecentTransaction = () => {
   );
 };
 
+const AddTransactionModal = lazy(
+  () => import("../components/modals/AddTransactionModal"),
+);
+
 const Dashboard = () => {
   const { isOpen, openModal, closeModal } = useModal();
 
@@ -326,7 +330,9 @@ const Dashboard = () => {
         icon={<PlusIcon className="size-10 text-white" />}
         onClick={openModal}
       />
-      <AddTransactionModal isOpen={isOpen} closeModal={closeModal} />
+      <Suspense>
+        <AddTransactionModal isOpen={isOpen} closeModal={closeModal} />
+      </Suspense>
     </>
   );
 };
